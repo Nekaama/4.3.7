@@ -58,9 +58,13 @@ async function search (event) {
             let box = createElement(value['name'],value['owner']['login'],value['stargazers_count']);
             resultBox.insertAdjacentElement('afterbegin', box);
         }
-    } else (
+    } else {
+        if(response.status === 403) {
+            let box = createElement('Слишком частые запросы');
+            resultBox.insertAdjacentElement('afterbegin', box);
+        }
         console.log(response.status)
-    )
+    }
 }
 
 let container = document.querySelector('.container');
@@ -75,7 +79,7 @@ input.addEventListener('input', event => {
 })
 
 resultBox.addEventListener('click', event => {  
-    if (event.target.textContent === 'Нет результатов')  {
+    if (event.target.textContent === 'Нет результатов' || event.target.textContent === 'Слишком частые запросы')  {
         return;
     }
     let box = createElementResult(event.target.textContent,event.target.dataset.owner,event.target.dataset.stars);
@@ -88,4 +92,5 @@ save.addEventListener('click', event => {
     if (event.target.className === 'close'){
         event.target.parentElement.remove();
     }
+
 })
